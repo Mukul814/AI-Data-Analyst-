@@ -6,7 +6,7 @@ import uuid
 from contextlib import asynccontextmanager
 from pathlib import Path
 
-from fastapi import Depends, FastAPI, File, HTTPException, UploadFile
+from fastapi import Depends, FastAPI, File, HTTPException, Response, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from starlette.concurrency import run_in_threadpool
@@ -68,7 +68,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[settings.frontend_url],
     allow_credentials=True,
-    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_methods=["GET", "POST", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 
@@ -120,6 +120,29 @@ def list_projects(db: Session = Depends(get_db)):
     ]
 
 
+@app.get("/api/v1/projects/{project_id}")
+def get_project(project_id: str, db: Session = Depends(get_db)):
+    project = db.get(Project, project_id)
+    if not project:
+        raise HTTPException(404, "Project not found.")
+    return {
+        "id": project.id,
+        "name": project.name,
+        "description": project.description,
+        "created_at": project.created_at.isoformat(),
+        "datasets": [
+            {
+                "id": d.id,
+                "project_id": d.project_id,
+                "filename": d.filename,
+                "profile": d.profile,
+                "created_at": d.created_at.isoformat(),
+            }
+            for d in project.datasets
+        ],
+    }
+
+
 @app.post("/api/v1/projects", status_code=201)
 def create_project(payload: ProjectCreate, db: Session = Depends(get_db)):
     project = Project(name=payload.name.strip(), description=payload.description)
@@ -133,6 +156,22 @@ def create_project(payload: ProjectCreate, db: Session = Depends(get_db)):
         "created_at": project.created_at.isoformat(),
         "datasets": [],
     }
+
+
+@app.delete("/api/v1/projects/{project_id}", status_code=204)
+def delete_project(project_id: str, db: Session = Depends(get_db)):
+    project = db.get(Project, project_id)
+    if not project:
+        raise HTTPException(404, "Project not found.")
+    storage_keys = [dataset.storage_key for dataset in project.datasets]
+    db.delete(project)
+    db.commit()
+    for key in storage_keys:
+        try:
+            LocalStorage().delete(key)
+        except Exception:
+            log.exception("Could not remove uploaded file after project deletion")
+    return Response(status_code=204)
 
 
 @app.post("/api/v1/projects/{project_id}/datasets", status_code=201)

@@ -84,3 +84,58 @@ def test_correlation_serializes_constant_columns_as_null():
         "Show the correlation",
     )
     assert result["analysis_type"] == "correlation"
+
+
+def test_natural_language_totals_groups_distributions_and_relationships():
+    frame = pd.DataFrame({
+        "Region": ["East", "West", "East"],
+        "Product": ["A", "B", "B"],
+        "Revenue": [10, 20, 30],
+        "Profit": [2, 5, 4],
+    })
+    total = analyze(frame, "What is the total sales?")
+    assert total["result"]["total"] == 60
+    grouped = analyze(frame, "Which region has the highest revenue?")
+    assert grouped["result"][0]["label"] == "East" and len(grouped["result"]) == 1
+    product = analyze(frame, "What are the top 5 products?")
+    assert product["result"][0]["label"] == "B"
+    distribution = analyze(frame, "How are sales distributed?")
+    assert distribution["visualization"]["type"] == "histogram"
+    relationship = analyze(frame, "Is there a relationship between sales and profit?")
+    assert relationship["visualization"]["type"] == "scatter"
+
+
+def test_unsupported_question_is_explicit():
+    result = analyze(pd.DataFrame({"sales": [10, 20]}), "Tell me a joke")
+    assert result["analysis_type"] == "unsupported"
+    assert "couldn't safely map" in result["answer"]
+
+
+def test_revenue_share_by_region_uses_revenue_totals_not_record_counts():
+    frame = pd.DataFrame({"Region": ["East", "West", "East"], "Revenue": [40, 30, 60]})
+    result = analyze(frame, "How are revenue shares distributed by region?")
+    assert {row["label"]: row["value"] for row in result["result"]} == {"East": 100.0, "West": 30.0}
+    assert {row["label"]: row["share_percentage"] for row in result["result"]} == pytest.approx({"East": 100 / 130 * 100, "West": 30 / 130 * 100}, abs=0.0001)
+    assert result["visualization"]["y"] == "share_percentage"
+
+
+def test_explicit_sales_profit_correlation_uses_exact_requested_columns():
+    frame = pd.DataFrame({"Revenue": [1, 2, 3, 4], "Profit": [2, 4, 6, 8], "Units": [4, 1, 3, 2]})
+    result = analyze(frame, "Is there a relationship between sales and profit?")
+    assert result["result"]["columns"] == ["Revenue", "Profit"]
+    assert result["result"]["correlation"] == pytest.approx(1)
+
+
+def test_average_order_value_uses_revenue_and_rejects_order_count_only():
+    frame = pd.DataFrame({"Revenue": [50, 100], "Order_Count": [5, 10], "Profit": [2, 4]})
+    result = analyze(frame, "What is the average order value?")
+    assert result["result"] == {"column": "Revenue", "average": 75.0}
+    with pytest.raises(ValueError, match="order-value column"):
+        analyze(pd.DataFrame({"Order_Count": [5, 10]}), "What is the average order value?")
+
+
+def test_forecast_next_period_returns_one_period():
+    frame = pd.DataFrame({"date": pd.date_range("2025-01-01", periods=4, freq="MS"), "revenue": [10, 12, 15, 17]})
+    result = analyze(frame, "Forecast revenue for the next period")
+    assert len(result["result"]["forecast"]) == 1
+    assert "next period" in result["answer"]

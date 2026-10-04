@@ -66,6 +66,9 @@ class Conversation(Base):
     messages: Mapped[list["Message"]] = relationship(
         back_populates="conversation", cascade="all, delete-orphan"
     )
+    analysis_sessions: Mapped[list["AnalysisSession"]] = relationship(
+        back_populates="conversation", cascade="all, delete-orphan"
+    )
 
 
 class Message(Base):
@@ -91,6 +94,7 @@ class AnalysisSession(Base):
     result: Mapped["AnalysisResult"] = relationship(
         back_populates="session", cascade="all, delete-orphan", uselist=False
     )
+    conversation: Mapped[Conversation] = relationship(back_populates="analysis_sessions")
 
 
 class AnalysisResult(Base):

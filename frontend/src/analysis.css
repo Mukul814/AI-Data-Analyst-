@@ -1,0 +1,16 @@
+.analysis-details,.analysis-warning,.data-details{margin-top:12px;padding:11px 12px;border:1px solid #edf0eb;border-radius:8px;color:#536259;font-size:10px}
+.analysis-details b{font:700 10px Manrope}
+.analysis-details ul{margin:7px 0 0;padding-left:18px;line-height:1.6}
+.analysis-warning{background:#fff8e9;border-color:#f0e4c7;color:#755e32}
+.analysis-warning p{margin:0 0 5px}.analysis-warning p:last-child{margin:0}
+.data-details summary{cursor:pointer;font-weight:600}
+.data-details pre{max-height:280px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;background:#f5f7f3;padding:12px;border-radius:7px;font:10px/1.5 monospace}
+.chart-empty{padding:18px;color:#849087;font-size:10px}
+.sidebar nav .nav-item,.sidebar-bottom>.nav-item{font-family:'DM Sans',sans-serif}
+.panel-head>.button-primary{flex:none}
+.workspace-switch{cursor:default}.profile{cursor:default}
+.delete-project{display:grid;place-items:center;width:27px;height:27px;border:0;border-radius:6px;background:transparent;color:#9a6358;cursor:pointer}.delete-project:hover{background:#fff0ed}
+.analysis-loading{display:flex;align-items:center;gap:9px;color:#63756a;font-size:10px}
+.modal-backdrop{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:18px;background:#16251dcc}
+.project-modal{position:relative;width:min(420px,100%);padding:24px;background:#fff;border:1px solid #e8ece5;border-radius:12px;box-shadow:0 18px 55px #12271d40}
+.project-modal h2{margin:0;font:700 18px Manrope,sans-serif;color:#26372e}.project-modal p{margin:6px 0 18px;color:#78877b;font-size:11px}.project-modal label{display:block;margin-bottom:6px;font-size:10px;font-weight:700;color:#536259}.project-modal input{width:100%;padding:10px 11px;border:1px solid #dfe6dc;border-radius:7px;font:11px 'DM Sans';outline-color:#78a886}.field-error{margin-top:7px;color:#a34b3e;font-size:10px}.modal-close{position:absolute;right:13px;top:13px;border:0;background:transparent;color:#7b887e;cursor:pointer}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:20px}.modal-cancel{border:1px solid #e2e8e0;background:#fff;border-radius:7px;padding:9px 13px;color:#5c6c61;font:600 10px 'DM Sans';cursor:pointer}.modal-actions .button-primary:disabled{opacity:.65;cursor:wait}

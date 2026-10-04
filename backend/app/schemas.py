@@ -37,7 +37,7 @@ class AskRequest(BaseModel):
 
 
 class Visualization(BaseModel):
-    type: Literal["bar", "line", "scatter", "histogram", "box"]
+    type: Literal["bar", "line", "scatter", "histogram", "box", "pie"]
     title: str
     x: str | None = None
     y: str | None = None
