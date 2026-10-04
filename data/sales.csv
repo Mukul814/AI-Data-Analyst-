@@ -1,0 +1,21 @@
+date,region,category,product,units_sold,revenue,cost,profit,customer_segment
+2025-01-04,West,Electronics,Wireless Mouse,18,540,270,270,Consumer
+2025-01-11,East,Home,Desk Lamp,12,360,180,180,Small Business
+2025-01-19,South,Electronics,Keyboard,9,720,405,315,Consumer
+2025-02-03,North,Office,Notebook Set,25,250,100,150,Education
+2025-02-14,West,Home,Coffee Maker,7,840,525,315,Consumer
+2025-02-25,East,Electronics,Monitor,5,1250,800,450,Corporate
+2025-03-02,South,Office,Ergonomic Chair,4,1440,920,520,Corporate
+2025-03-13,North,Electronics,Wireless Mouse,21,630,315,315,Consumer
+2025-03-26,West,Home,Desk Lamp,15,450,225,225,Small Business
+2025-04-05,East,Office,Notebook Set,32,320,128,192,Education
+2025-04-17,South,Electronics,Keyboard,11,880,495,385,Consumer
+2025-04-28,North,Home,Coffee Maker,8,960,600,360,Consumer
+2025-05-06,West,Electronics,Monitor,6,1500,960,540,Corporate
+2025-05-18,East,Office,Ergonomic Chair,3,1080,690,390,Corporate
+2025-05-29,South,Electronics,Wireless Mouse,24,720,360,360,Consumer
+2025-06-07,North,Home,Desk Lamp,17,510,255,255,Small Business
+2025-06-15,West,Office,Notebook Set,28,280,112,168,Education
+2025-06-26,East,Electronics,Keyboard,13,1040,585,455,Consumer
+2025-07-03,South,Home,Coffee Maker,9,1080,675,405,Consumer
+2025-07-16,North,Electronics,Monitor,4,1000,640,360,Corporate

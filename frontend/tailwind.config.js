@@ -1,0 +1,1 @@
+export default { content: ['./index.html', './src/**/*.{ts,tsx}'], theme: { extend: { colors: { ink:'#17231f', muted:'#718078', forest:'#1b5543', lime:'#d9f36a', paper:'#f6f7f2', line:'#e5e9e1' }, boxShadow: { soft:'0 12px 38px rgba(22,44,34,.07)' } } }, plugins: [] }
